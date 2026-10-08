@@ -1,6 +1,6 @@
 # go-asn1c — Commercial ASN.1 Integration Guide
 
-> Copyright 2020 RideNext Software Solutions (I) Pvt. Ltd. All rights reserved.  
+> Copyright 2020 RideNext Software Solutions (I) Pvt. Ltd. Licensed under the Apache License, Version 2.0.  
 > Contact: service@ridenext.co.in
 
 ---
