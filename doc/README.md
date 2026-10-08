@@ -1502,5 +1502,5 @@ go run main.go
 
 ---
 
-*Copyright 2020 RideNext Software Solutions (I) Pvt. Ltd. All rights reserved.*  
+*Copyright 2020 RideNext Software Solutions (I) Pvt. Ltd. Licensed under the Apache License, Version 2.0.*  
 *Contact: manish.tiwari@ridenext.co.in & manohar.palukuru@ridenext.co.in
