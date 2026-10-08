@@ -59,6 +59,19 @@ ASN.1 File (.asn)
 
 PER is the default when `-t` is omitted.
 
+### Repository Layout
+
+| Path            | Contents                                                      |
+|-----------------|---------------------------------------------------------------|
+| `asn1/`         | Input ASN.1 specification files (`<proto>-<version>.asn`)     |
+| `libgo/`        | Go runtime/stream sources and per-protocol sample programs    |
+| `hooks/`        | PyInstaller hooks for building the generator                  |
+| `protocols/`    | Generated Go modules, one per protocol and version            |
+| `dist/`         | Built `genasnpy` generator binary                             |
+| `buildpyasn.sh` | Generates Go code for every `.asn` file under `asn1/`         |
+| `genasnpy.spec` | PyInstaller spec for building the `genasnpy` binary           |
+| `LICENSE`       | Apache License, Version 2.0                                   |
+
 ---
 
 ## 2. Prerequisites & System Requirements
