@@ -66,7 +66,7 @@ PER is the default when `-t` is omitted.
 | `asn1/`         | Input ASN.1 specification files (`<proto>-<version>.asn`)     |
 | `libgo/`        | Go runtime/stream sources and per-protocol sample programs    |
 | `hooks/`        | PyInstaller hooks for building the generator                  |
-| `protocols/`    | Generated Go modules (`<proto>/<ver>/`); currently `ranap/f50` and `asn1/ngap/f50` |
+| `protocols/`    | Generated Go modules (`<proto>/<ver>/`); one folder per ASN.1 file, see Supported Protocols below |
 | `dist/`         | Built `genasnpy` generator binary                             |
 | `buildpyasn.sh` | Generates Go code for every `.asn` file under `asn1/`         |
 | `genasnpy.spec` | PyInstaller spec for building the `genasnpy` binary           |
@@ -76,24 +76,24 @@ PER is the default when `-t` is omitted.
 
 | Protocol  | ASN.1 source files (`asn1/`)                                                                 | Encoding | Generated in `protocols/` |
 |-----------|----------------------------------------------------------------------------------------------|----------|---------------------------|
-| NGAP      | `ngap-f50.asn`                                                                               | PER      | `asn1/ngap/f50`           |
-| RANAP     | `ranap-f50.asn`, `ranap-f15.asn`                                                             | PER      | `ranap/f50`               |
-| F1AP      | `f1ap-f60.asn`                                                                               | PER      | -                         |
-| E1AP      | `e1ap-f40.asn`                                                                               | PER      | -                         |
-| E2AP      | `e2ap-v02.asn`, `e2ap-v02_01.asn`, `e2ap-v03_01.asn`                                         | PER      | -                         |
-| E2SM-KPM  | `e2sm-kpm_v02.asn`, `_v02_01`, `_v03_01`, `_v03_05`                                          | PER      | -                         |
-| E2SM-RC   | `e2sm-rc_v02.asn`, `_v02_01`, `_v04_00`, `_v06_00`                                           | PER      | -                         |
-| S1AP      | `s1ap-f50.asn`                                                                               | PER      | -                         |
-| X2AP      | `x2ap-f50.asn`                                                                               | PER      | -                         |
-| XnAP      | `xnap-f30.asn`, `xnap-f40.asn`                                                               | PER      | -                         |
-| HNBAP     | `hnbap-f50.asn`                                                                              | PER      | -                         |
-| RUA       | `rua-f50.asn`                                                                                | PER      | -                         |
-| M2AP      | `m2ap-f50.asn`                                                                               | PER      | -                         |
-| M3AP      | `m3ap-f40.asn`, `m3ap-f50.asn`                                                               | PER      | -                         |
-| RRC (LTE) | `rrc-f60.asn`                                                                                | UAPER    | -                         |
-| RRC (NR)  | `rrc-5g_f51.asn`, `rrc-5g_f60.asn`                                                           | UAPER    | -                         |
+| NGAP | `ngap-f50.asn` | PER | `ngap/f50` |
+| RANAP | `ranap-f50.asn`, `ranap-f15.asn` | PER | `ranap/f15`, `ranap/f50` (*) |
+| F1AP | `f1ap-f60.asn` | PER | `f1ap/f60` |
+| E1AP | `e1ap-f40.asn` | PER | `e1ap/f40` (*) |
+| E2AP | `e2ap-v02.asn`, `e2ap-v02_01.asn`, `e2ap-v03_01.asn` | PER | `e2ap/v02`, `v02_01`, `v03_01` |
+| E2SM-KPM | `e2sm-kpm_v02.asn`, `_v02_01`, `_v03_01`, `_v03_05` | PER | `e2sm/kpm_v02`, `kpm_v02_01`, `kpm_v03_01`, `kpm_v03_05` |
+| E2SM-RC | `e2sm-rc_v02.asn`, `_v02_01`, `_v04_00`, `_v06_00` | PER | `e2sm/rc_v02`, `rc_v02_01`, `rc_v04_00` (*), `rc_v06_00` |
+| S1AP | `s1ap-f50.asn` | PER | `s1ap/f50` |
+| X2AP | `x2ap-f50.asn` | PER | `x2ap/f50` |
+| XnAP | `xnap-f30.asn`, `xnap-f40.asn` | PER | `xnap/f30`, `xnap/f40` |
+| HNBAP | `hnbap-f50.asn` | PER | `hnbap/f50` (*) |
+| RUA | `rua-f50.asn` | PER | `rua/f50` |
+| M2AP | `m2ap-f50.asn` | PER | `m2ap/f50` |
+| M3AP | `m3ap-f40.asn`, `m3ap-f50.asn` | PER | `m3ap/f40` (*), `m3ap/f50` (*) |
+| RRC (LTE) | `rrc-f60.asn` | UAPER | `rrc/f60` (*) |
+| RRC (NR) | `rrc-5g_f51.asn`, `rrc-5g_f60.asn` | UAPER | `rrc/5g_f51` (*), `rrc/5g_f60` (*) |
 
-Run `./buildpyasn.sh` to generate any protocol marked `-`.
+(*) Generated as-is by `genasnpy`, but the output does not compile yet (generator limitations such as `-1` passed to an unsigned argument, missing `SDAPConfig`/`get_openlen`, invalid syntax, or name clashes). Other modules need `github.com/sirupsen/logrus` (`go mod tidy`). Regenerate with `./buildpyasn.sh`. `protocols/asn1/ngap/f50` is an older NGAP copy.
 
 ---
 
