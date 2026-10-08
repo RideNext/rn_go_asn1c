@@ -1,0 +1,105 @@
+PYINT-Descriptions {
+itu-t (0) identified-organization (4) etsi (0) mobileDomain (0)
+ngran-access (22) modules (3) e1ap (5) version1 (1) e1ap-PDU-Descriptions (0) }
+
+DEFINITIONS AUTOMATIC TAGS ::= 
+
+BEGIN
+Resource ::= PrintableString(SIZE(1..32))
+MessageSendRecv  ::= RNString (SIZE(1..10240))
+MType ::= ENUMERATED {registerres, deregisterres, sendmsg, loopbackmsg, recvmsg}
+NodeName ::= PrintableString(SIZE(1..32))
+ProtocolName ::= PrintableString(SIZE(1..32))
+IP ::= PrintableString(SIZE(1..20))
+Port ::= INTEGER (0..65535)
+KeepAlive ::= INTEGER (0..65535)
+NumOStreams ::= INTEGER (0..65535)
+MaxInStreams ::= INTEGER (0..65535)
+MaxAttempts ::= INTEGER (0..65535)
+maxNoOfNodes          INTEGER ::= 512
+
+
+RNNodeItem ::= SEQUENCE {
+    nodeName             NodeName
+}
+
+RNNodeNamesList ::= SEQUENCE (SIZE(0.. maxNoOfNodes)) OF RNNodeItem
+
+RNServicesItem ::= SEQUENCE {
+    nodeName             NodeName,
+    ip                   IP,
+    port                 Port
+}
+
+RNServicesList ::= SEQUENCE (SIZE(0.. maxNoOfNodes)) OF RNServicesItem
+
+ProtocolInfoItem ::= SEQUENCE {
+    protocolName         ProtocolName,
+    ip                   IP,
+    port                 Port
+}
+
+ProtocolInfoList ::= SEQUENCE (SIZE(0.. maxNoOfNodes)) OF ProtocolInfoItem
+
+ProtocolsItem ::= SEQUENCE {
+    nodeName             NodeName,
+    protocolInfoList     ProtocolInfoList
+}
+
+ProtocolsList ::= SEQUENCE (SIZE(0.. maxNoOfNodes)) OF ProtocolsItem
+
+UDPResource ::= SEQUENCE {
+    servIp               IP,
+    servPort             Port,
+    cliIp                IP,
+    cliPort              Port
+}
+
+TCPResource ::= SEQUENCE {
+    servIp               IP,
+    servPort             Port,
+    cliIp                IP,
+    cliPort              Port,
+    keepAlive            KeepAlive
+}
+
+SCTPResource ::= SEQUENCE {
+    servIp               IP,
+    servPort             Port,
+    cliIp                IP,
+    cliPort              Port,
+    numOStreams          NumOStreams,
+    maxInStreams         MaxInStreams,
+    maxAttempts          MaxAttempts
+}
+
+ResourceChoice ::= CHOICE {
+    udp                  UDPResource,
+    tcp                  TCPResource,
+    sctp                 SCTPResource
+}
+
+ResourceConfigItem ::= SEQUENCE {
+    resourceName         Resource,
+    resourceChoice       ResourceChoice
+}
+
+ResourceConfigList ::= SEQUENCE (SIZE(0.. maxNoOfNodes)) OF ResourceConfigItem
+
+PYINT-PDU ::= SEQUENCE {
+    rnNodeNames          RNNodeNamesList,
+    rnService            RNServicesList,
+    protocols            ProtocolsList,
+    serverConfigList     ResourceConfigList,
+    clientConfigList     ResourceConfigList
+}
+
+RNPIMessage ::= SEQUENCE {
+    type                 MType,
+    resource             Resource,
+    message              MessageSendRecv
+}
+
+
+END
+

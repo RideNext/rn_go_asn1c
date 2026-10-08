@@ -1,0 +1,21 @@
+package main
+
+import (
+	e2ap "ridenext.co.in/goasn1/e2ap"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+)
+
+func main() {
+   msgSR, _ := hex.DecodeString("0008004b000003001d00050000030d4000050002000d001e0035001b18000300000020000000000120000100000220000200000320000300001340134001000f00010400000210012b10012c10018f00")
+   msgInd, _ := hex.DecodeString("00050076000006001d00050000030d18000500020002000f000101001c0001000019002d2c1ee9df44a5fae147ae485645525f325f335f3100000a4b504d5f5354594c45313870697474657374064e4543001a0025240c00000001000a00000110444c20546f74616c205052422055736167650120000040018f");
+   st := e2ap.Stream{}
+   fmt.Println(msgSR)
+   fmt.Println(msgInd)
+   st.Init(msgSR)
+   pdu := e2ap.E2APPDU{}
+   pdu.Unpack(&st)
+   jsonData, _ := json.Marshal(pdu)
+   fmt.Printf("PDU = %s\n", jsonData)
+}

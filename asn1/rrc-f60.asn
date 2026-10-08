@@ -1,0 +1,31 @@
+-- ASN1START
+-- TAG-NR-RRC-DEFINITIONS-START
+
+NR-RRC-Definitions DEFINITIONS AUTOMATIC TAGS ::=
+
+BEGIN
+
+-- TAG-NR-RRC-DEFINITIONS-STOP
+-- ASN1STOP
+-- ASN1START
+-- TAG-BCCH-BCH-MESSAGE-START
+
+
+DRB-ToAddMod ::=                        SEQUENCE {
+    cnAssociation                           CHOICE {
+        eps-BearerIdentity                      INTEGER (0..15),                                                -- EPS-DRB-Setup
+        sdap-Config                             SDAP-Config                                                     -- 5GC
+    }                                                                                               OPTIONAL,   -- Cond DRBSetup
+    drb-Identity                            DRB-Identity,
+    reestablishPDCP                         ENUMERATED{ tRue}                                        OPTIONAL,   -- Need N
+    recoverPDCP                             ENUMERATED{ tRue}                                        OPTIONAL,   -- Need N
+    pdcp-Config                             PDCP-Config                                             OPTIONAL,   -- Cond PDCP
+    ...
+}
+
+MeasTriggerQuantityEUTRA::=                         CHOICE {
+    rsrp                                        RSRP-RangeEUTRA,
+    rsrq                                        RSRQ-RangeEUTRA,
+    sinr                                        SINR-RangeEUTRA
+}
+END

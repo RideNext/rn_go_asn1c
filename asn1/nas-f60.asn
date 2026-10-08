@@ -1,0 +1,705 @@
+
+NAS-PDU-Descriptions  {
+itu-t (0) identified-organization (4) etsi (0) mobileDomain (0)
+eps-Access (21) modules (3) s1ap (1) version1 (1) s1ap-PDU-Descriptions (0)}
+
+DEFINITIONS AUTOMATIC TAGS ::=
+
+BEGIN
+
+maxProtocolIEs INTEGER ::= 256
+
+ProcedureCode ::= INTEGER (0..255)
+ProtocolIE-ID ::= INTEGER (0..255)
+
+Presance ::= ENUMERATED {
+	mandatory,
+	optional,
+	conditional
+}
+Criticality ::= ENUMERATED {
+   ignore
+}
+
+Ext-Prot-Disc ::= OCTET STRING (SIZE(1))
+Sec-Header-Type ::= BIT STRING (SIZE(4))
+Spare-Bits4 ::= BIT STRING (SIZE(4))
+Message-Type ::= INTEGER (0..255)
+NAS-Key-Set-ID ::= BIT STRING (SIZE(4))
+Auth-Param-Rand ::= OCTET STRING (SIZE(16))
+Auth-Param-Autn ::= OCTET STRING (SIZE(0..16))
+
+EAP-Message-Buff ::= OCTET STRING (SIZE(4..1500))
+
+NAS-PROTOCOL-IES ::= CLASS {
+	&id	  ProtocolIE-ID UNIQUE,
+	&criticality    Criticality,
+	&Value,
+	&presance Presance
+}
+WITH SYNTAX {
+	ID		&id,
+        CRITICALITY	&criticality
+	TYPE		&Value,
+	PRESENCE	&presance
+}
+
+NAS-ELEMENTARY-PROCEDURE ::= CLASS {
+        &Option0,
+        &Option1	OPTIONAL,
+        &Option2	OPTIONAL,
+        &Option3	OPTIONAL,
+        &Option4	OPTIONAL,
+        &Option5	OPTIONAL,
+        &Option6	OPTIONAL,
+        &Option7	OPTIONAL,
+        &Option8	OPTIONAL,
+        &Option9	OPTIONAL,
+        &Option10	OPTIONAL,
+        &Option11	OPTIONAL,
+        &Option12	OPTIONAL,
+        &Option13	OPTIONAL,
+        &Option14	OPTIONAL,
+        &Option15	OPTIONAL,
+        &Option16	OPTIONAL,
+        &Option17	OPTIONAL,
+        &Option18	OPTIONAL,
+        &Option19	OPTIONAL,
+        &Option20	OPTIONAL,
+        &Option21	OPTIONAL,
+        &Option22	OPTIONAL,
+        &Option23	OPTIONAL,
+        &Option24	OPTIONAL,
+        &Option25	OPTIONAL,
+        &Option26	OPTIONAL,
+        &Option27	OPTIONAL,
+        &Option28	OPTIONAL,
+        &Option29	OPTIONAL,
+        &Option30	OPTIONAL,
+        &Option31	OPTIONAL,
+        &procedureCode		ProcedureCode   UNIQUE,
+	&sectype Sec-Header-Type,
+	&spare 	Spare-Bits4
+}
+WITH SYNTAX {
+        OPTION0		&Option0
+        [OPTION1	&Option1]
+        [OPTION2	&Option2]
+        [OPTION3	&Option3]
+        [OPTION4	&Option4]
+        [OPTION5	&Option5]
+        [OPTION6	&Option6]
+        [OPTION7	&Option7]
+        [OPTION8	&Option8]
+        [OPTION9	&Option9]
+        [OPTION10	&Option10]
+        [OPTION11	&Option11]
+        [OPTION12	&Option12]
+        [OPTION13	&Option13]
+        [OPTION14	&Option14]
+        [OPTION15	&Option15]
+        [OPTION16	&Option16]
+        [OPTION17	&Option17]
+        [OPTION18	&Option18]
+        [OPTION19	&Option19]
+        [OPTION20	&Option20]
+        [OPTION21	&Option21]
+        [OPTION22	&Option22]
+        [OPTION23	&Option23]
+        [OPTION24	&Option24]
+        [OPTION25	&Option25]
+        [OPTION26	&Option26]
+        [OPTION27	&Option27]
+        [OPTION28	&Option28]
+        [OPTION29	&Option29]
+        [OPTION30	&Option30]
+        [OPTION31	&Option31]
+        PROCEDURE CODE		&procedureCode,
+	SECHDRTYPE	&sectype,
+	SPARE		&spare
+}
+
+NAS-PDU ::= CHOICE {
+        registration-Request       Option0,
+        registration-Accept       Option1,
+        registration-Complete       Option2,
+        registration-reject       Option3,
+        auth-Reqequest       Option4,
+        auth-Response       Option5,
+        auth-Results       Option6,
+        auth-Failure       Option7,
+        auth-Reject       Option8,
+        ul-Nas-Transport       Option9,
+        dl-Nas-Transport       Option10,
+        option11       Option11,
+        option12       Option12,
+        option13       Option13,
+        option14       Option14,
+        option15       Option15,
+        option16       Option16,
+        option17       Option17,
+        option18       Option18,
+        option19       Option19,
+        option20       Option20,
+        option21       Option21,
+        option22       Option22,
+        option23       Option23,
+        option24       Option24,
+        option25       Option25,
+        option26       Option26,
+        option27       Option27,
+        option28       Option28,
+        option29       Option29,
+        option30       Option30,
+        option31       Option31
+}
+ProtocolIE-Container {NAS-PROTOCOL-IES : IEsSetParam} ::=
+        SEQUENCE (SIZE (0..maxProtocolIEs)) OF
+        ProtocolIE-Field {{IEsSetParam}}
+
+ProtocolIE-Field {S1AP-PROTOCOL-IES : IEsSetParam} ::= SEQUENCE {
+        id                      NAS-PROTOCOL-IES.&id     ({IEsSetParam}),
+        value                   NAS-PROTOCOL-IES.&Value  ({IEsSetParam}{@id})
+}
+
+
+Option0 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option0 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option1 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option1 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option2 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option2 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option3 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option3 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option4 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option4 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option5 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option5 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option6 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option6 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option7 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option7 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option8 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option8 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option9 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option9 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option10 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option10 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option11 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option11 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option12 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option12 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option13 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option13 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option14 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option14 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option15 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option15 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option16 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option16 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option17 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option17 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option18 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option18 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option19 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option19 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option20 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option20 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option21 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option21 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option22 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option22 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option23 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option23 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option24 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option24 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option25 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option25 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option26 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option26 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option27 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option27 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option28 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option28 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option29 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option29 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option30 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option30 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+Option31 ::= SEQUENCE {
+        procedureCode	NAS-ELEMENTARY-PROCEDURE.&procedureCode     ({NAS-ELEMENTARY-PROCEDURES}),
+        sectyp		NAS-ELEMENTARY-PROCEDURE.&sectype ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        spare		NAS-ELEMENTARY-PROCEDURE.&spare ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode}),
+        value		NAS-ELEMENTARY-PROCEDURE.&Option31 ({NAS-ELEMENTARY-PROCEDURES}{@procedureCode})
+}
+
+NAS-ELEMENTARY-PROCEDURES NAS-ELEMENTARY-PROCEDURE ::= {
+        NAS-ELEMENTARY-PROCEDURES-CLASS-1                      |
+        NAS-ELEMENTARY-PROCEDURES-CLASS-2
+}
+
+NAS-ELEMENTARY-PROCEDURES-CLASS-1 NAS-ELEMENTARY-PROCEDURE ::= {
+	gMM-Mobility
+}
+
+NAS-ELEMENTARY-PROCEDURES-CLASS-2 NAS-ELEMENTARY-PROCEDURE ::= {
+...
+}
+id-GMM-Mobility ProcedureCode ::= 7
+id-Sec-Hdr-Value ProtocolIE-ID ::= 0
+id-Spare-Value ProtocolIE-ID ::= 0
+gMM-Mobility NAS-ELEMENTARY-PROCEDURE ::= {
+        OPTION0      Registration-Request
+        OPTION1      Registration-Accept
+        OPTION2      Registration-Complete
+        OPTION3      Registration-Reject
+        OPTION4      Authentication-Request
+        OPTION5      Authentication-Response
+        OPTION6      Authentication-Result
+        OPTION7      Authentication-Failure
+        OPTION8      Authentication-Reject
+        OPTION9      UL-NAS-Transport
+        OPTION10     DL-NAS-Transport
+        PROCEDURE CODE          id-GMM-Mobility
+	SECHDRTYPE	id-Sec-Hdr-Value
+	SPARE		id-Spare-Value
+}
+
+EAP-Message ::= SEQUENCE {
+	msg EAP-Message-Buff
+}
+
+Auth-Param-RAND ::= SEQUENCE {
+	rand Auth-Param-Rand
+}
+
+Auth-Param-AUTN ::= SEQUENCE {
+	rand Auth-Param-Autn
+}
+
+
+Authentication-Request-Hdr ::= SEQUENCE {
+	ngKSI NAS-Key-Set-ID,
+	spare2 Spare-Bits4
+}
+
+Authentication-Request ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Authentication-Request-IEs}}
+}
+
+id-EAP-Message ProtocolIE-ID ::= 120
+id-Auth-Req-Hdr ProtocolIE-ID ::= 86
+id-Auth-Param-Rand ProtocolIE-ID ::= 33
+id-Auth-Param-Autn ProtocolIE-ID ::= 32
+
+Authentication-Request-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Auth-Req-Hdr TYPE Authentication-Request-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-Auth-Param-Rand   TYPE Auth-Param-Rand  CRITICALITY ignore PRESENCE optional} |
+	{ ID id-Auth-Param-Autn   TYPE Auth-Param-Autn  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-EAP-Message   TYPE EAP-Message  CRITICALITY ignore PRESENCE optional}
+}
+
+Authentication-Response-Hdr ::= SEQUENCE {
+	spare Spare-Null
+}
+
+
+Auth-Resp-Param  ::= OCTET STRING (SIZE(4..16))
+
+Authentication-Response ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Authentication-Response-IEs}}
+}
+id-Auth-Res-Hdr ProtocolIE-ID ::= 87
+id-Auth-Res-Param ProtocolIE-ID ::= 45
+maxnoofE-RABs INTEGER ::= 256
+Authentication-Response-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Auth-Res-Hdr TYPE Authentication-Response-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-Auth-Res-Param   TYPE Auth-Resp-Param  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-EAP-Message   TYPE EAP-Message  CRITICALITY ignore PRESENCE optional}
+}
+
+Authentication-Result-Hdr ::= SEQUENCE {
+	ngKSI NAS-Key-Set-ID,
+	spare2 Spare-Bits4,
+        eapMsg EAP-Message
+}
+id-Auth-Result-Hdr ProtocolIE-ID ::= 88
+Authentication-Result ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Authentication-Result-IEs}}
+}
+
+Authentication-Result-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Auth-Result-Hdr TYPE Authentication-Result-Hdr CRITICALITY ignore PRESENCE mandatory }
+}
+
+ProtocolIE-ContainerList {INTEGER : lowerBound, INTEGER : upperBound, NAS-PROTOCOL-IES : IEsSetParam} ::=
+        SEQUENCE (SIZE (lowerBound..upperBound)) OF
+        ProtocolIE-SingleContainer {{IEsSetParam}}
+
+ProtocolIE-SingleContainer {NAS-PROTOCOL-IES : IEsSetParam} ::=
+        ProtocolIE-Field {{IEsSetParam}}
+
+IE-ContainerList   { NAS-PROTOCOL-IES      : IEsSetParam }        ::= ProtocolIE-ContainerList     { 1, maxnoofE-RABs,   {IEsSetParam} }
+
+id-SNSSAI ProtocolIE-ID ::= 34
+
+SNSSAI ::= OCTET STRING (SIZE(3..8))
+RegType ::= OCTET STRING (SIZE(1))
+Mob-ID ::= OCTET STRING (SIZE(2..65535))
+NAS-Key-Set-ID ::= INTEGER (0..255)
+GMM-Capability ::= OCTET STRING (SIZE(1..13))
+UE-Sec-Capability ::= OCTET STRING (SIZE(4..6))
+
+--NSSAI ::= IE-ContainerList  {{SNSSAI-IEs}}
+
+NSSAI ::= SEQUENCE (SIZE(1..255)) OF  SNSSAI
+
+--SNSSAI-IEs NAS-PROTOCOL-IES ::= {
+--	{ ID id-SNSSAI TYPE SNSSAI CRITICALITY ignore PRESENCE mandatory }
+--}
+
+GS-TAI  ::= OCTET STRING (SIZE(6))
+UE-NW-Capability ::= OCTET STRING (SIZE(2..13))
+Uplink-Data-Status ::= OCTET STRING (SIZE(2..32))
+PDU-Session-Status ::= OCTET STRING (SIZE(2..32))
+PDU-Session-ID ::= OCTET STRING (SIZE(1))
+MICO-Ind ::= INTEGER (0..255)
+UE-Status ::= OCTET STRING (SIZE(0..1))
+UE-Ussage-Setting ::= OCTET STRING (SIZE(3))
+Payload-Container ::= OCTET STRING (SIZE(2..65536))
+RegResults ::= OCTET STRING (SIZE(1..1))
+
+Registration-Req-Hdr ::= SEQUENCE {
+--	type Message-Type,
+	regType RegType,
+	ngKSI NAS-Key-Set-ID,
+	spare2 Spare-Bits4,
+	mobId  Mob-ID
+}
+Spare-Null ::= BIT STRING (SIZE(0))
+
+Registration-Res-Hdr ::= SEQUENCE {
+	regRes RegResults
+}
+
+Registration-Comp-Hdr ::= SEQUENCE {
+	nullVal Spare-Null
+}
+Registration-Reject-Hdr ::= SEQUENCE {
+	cause GMM-Cause
+}
+
+Registration-Request ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Registration-Request-IEs}}
+}
+Registration-Accept ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Registration-Accept-IEs}}
+}
+Registration-Complete ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Registration-Complete-IEs}}
+}
+Registration-Reject ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Registration-Reject-IEs}}
+}
+
+id-Reg-Req-Hdr ProtocolIE-ID ::= 65
+id-Reg-Res-Hdr ProtocolIE-ID ::= 66
+id-Reg-Comp-Hdr ProtocolIE-ID ::= 67
+id-Reg-Reject-Hdr ProtocolIE-ID ::= 68
+id-NAS-KS-ID ProtocolIE-ID ::= 12
+id-GMM-Cap-ID ProtocolIE-ID ::= 16
+id-UE-Sec-Capability ProtocolIE-ID ::= 46
+id-NSSAI ProtocolIE-ID ::= 47
+id-GS-TAI ProtocolIE-ID ::= 82
+id-UE-NW-Capability ProtocolIE-ID ::= 101
+id-Uplink-Data-Status ProtocolIE-ID ::= 64
+id-PDU-Session-Status ProtocolIE-ID ::= 80
+id-MICO-Ind ProtocolIE-ID ::= 11
+id-UE-Status ProtocolIE-ID ::= 43
+
+Registration-Request-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Reg-Req-Hdr TYPE Registration-Req-Hdr CRITICALITY ignore PRESENCE mandatory }|
+--	{ ID id-NAS-KS-ID   TYPE NAS-Key-Set-ID  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-GMM-Cap-ID   TYPE GMM-Capability  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-UE-Sec-Capability   TYPE UE-Sec-Capability  CRITICALITY ignore PRESENCE optional}|
+--	{ ID id-NSSAI   TYPE NSSAI  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-GS-TAI   TYPE GS-TAI  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-UE-NW-Capability   TYPE UE-NW-Capability  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-Uplink-Data-Status   TYPE Uplink-Data-Status  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-PDU-Session-Status   TYPE PDU-Session-Status  CRITICALITY ignore PRESENCE optional}|
+--	{ ID id-MICO-Ind   TYPE MICO-Ind  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-UE-Status   TYPE UE-Status  CRITICALITY ignore PRESENCE optional}
+}
+TBCD-STRING ::= OCTET STRING (SIZE (3))
+PLMNidentity   ::= TBCD-STRING
+TAC ::= OCTET STRING (SIZE (2))
+TAI ::= SEQUENCE {
+        pLMNidentity   PLMNidentity,
+        tAC            TAC
+}
+
+maxPLMNs INTEGER ::= 255
+maxTAIs INTEGER ::= 255
+
+id-NG-GUTI ProtocolIE-ID ::= 44
+id-PLMN-List ProtocolIE-ID ::= 74
+id-TAI-List ProtocolIE-ID ::= 84
+id-Allowed-NSSAI ProtocolIE-ID ::= 112
+id-Reject-NSSAI ProtocolIE-ID ::= 17
+id-Config-NSSAI ProtocolIE-ID ::= 49
+NG-GUTI ::= OCTET STRING (SIZE(0..13))
+--PLMN ::= OCTET STRING (SIZE(3))
+PLMN-List ::= SEQUENCE (SIZE(1..maxPLMNs)) OF PLMNidentity
+TAI-List ::= SEQUENCE (SIZE(1..maxTAIs)) OF TAI
+GPRS-Timer ::= OCTET STRING (SIZE(1..1))
+id-T3512-Timer ProtocolIE-ID ::= 94
+id-T3346-Timer ProtocolIE-ID ::= 95
+id-T3502-Timer ProtocolIE-ID ::= 22
+T3512-Timer ::= GPRS-Timer
+T3346-Timer ::= GPRS-Timer
+T3502-Timer ::= GPRS-Timer
+
+Registration-Accept-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Reg-Res-Hdr TYPE Registration-Res-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-NG-GUTI TYPE NG-GUTI CRITICALITY ignore PRESENCE optional }|
+	{ ID id-PLMN-List TYPE PLMN-List CRITICALITY ignore PRESENCE optional }|
+	{ ID id-TAI-List TYPE TAI-List CRITICALITY ignore PRESENCE optional }|
+	{ ID id-Allowed-NSSAI TYPE NSSAI CRITICALITY ignore PRESENCE optional }|
+	{ ID id-Reject-NSSAI TYPE NSSAI CRITICALITY ignore PRESENCE optional }|
+	{ ID id-Config-NSSAI TYPE NSSAI CRITICALITY ignore PRESENCE optional }|
+	{ ID id-PDU-Session-Status   TYPE PDU-Session-Status  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-T3512-Timer   TYPE T3512-Timer  CRITICALITY ignore PRESENCE optional}|
+	{ ID id-EAP-Message   TYPE EAP-Message  CRITICALITY ignore PRESENCE optional}
+}
+Registration-Complete-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Reg-Comp-Hdr TYPE Registration-Comp-Hdr CRITICALITY ignore PRESENCE mandatory }
+}
+Registration-Reject-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Reg-Reject-Hdr TYPE Registration-Reject-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-T3346-Timer TYPE T3346-Timer CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-T3502-Timer TYPE T3502-Timer CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-EAP-Message   TYPE EAP-Message  CRITICALITY ignore PRESENCE optional}
+}
+
+GMM-Cause ::= INTEGER  (0..255)
+
+Atut-Failure-Param ::= OCTET STRING (SIZE(1..14))
+
+id-Auth-Fail-Hdr ProtocolIE-ID ::= 89
+id-GMM-Cause ProtocolIE-ID ::= 48
+
+Authentication-Failure-Hdr ::= SEQUENCE {
+	gmmCause GMM-Cause
+}
+
+Authentication-Failure ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Authentication-Failure-IEs}}
+}
+
+Authentication-Failure-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Auth-Fail-Hdr TYPE Authentication-Failure-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-GMM-Cause TYPE GMM-Cause CRITICALITY ignore PRESENCE optional }
+}
+
+id-Auth-Rej-Hdr ProtocolIE-ID ::= 90
+Authentication-Reject-Hdr ::= SEQUENCE {
+	spare Spare-Null
+}
+
+Authentication-Reject ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{Authentication-Reject-IEs}}
+}
+Authentication-Reject-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-Auth-Rej-Hdr TYPE Authentication-Reject-Hdr CRITICALITY ignore PRESENCE mandatory }
+}
+
+id-UL-NAS-Transport-Hdr ProtocolIE-ID ::= 103
+id-PDU-Session-ID ProtocolIE-ID ::= 112
+id-oldPDU-Session-ID ProtocolIE-ID ::= 97
+
+UL-NAS-Transport-Hdr ::= SEQUENCE {
+	pcType Spare-Bits4,
+	spare Spare-Bits4,
+        payloadContainer  OCTET STRING (SIZE(0..65535))
+}
+UL-NAS-Transport ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{UL-NAS-Transport-IEs}}
+}
+UL-NAS-Transport-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-UL-NAS-Transport-Hdr TYPE UL-NAS-Transport-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-PDU-Session-ID TYPE PDU-Session-ID CRITICALITY ignore PRESENCE optional }|
+	{ ID id-oldPDU-Session-ID TYPE PDU-Session-ID CRITICALITY ignore PRESENCE optional }|
+	{ ID id-SNSSAI TYPE SNSSAI CRITICALITY ignore PRESENCE optional }
+}
+
+id-DL-NAS-Transport-Hdr ProtocolIE-ID ::= 104
+id-DL-NAS-Addl-Info ProtocolIE-ID ::= 36
+DL-NAS-Addl-Info ::= OCTET STRING (SIZE(1..65535))
+
+DL-NAS-Transport-Hdr ::= SEQUENCE {
+	pcType Spare-Bits4,
+	spare Spare-Bits4,
+        payloadContainer  OCTET STRING (SIZE(0..65535))
+}
+DL-NAS-Transport ::= SEQUENCE {
+	protocolIEs                     ProtocolIE-Container       {{DL-NAS-Transport-IEs}}
+}
+DL-NAS-Transport-IEs NAS-PROTOCOL-IES ::= {
+	{ ID id-DL-NAS-Transport-Hdr TYPE DL-NAS-Transport-Hdr CRITICALITY ignore PRESENCE mandatory }|
+	{ ID id-PDU-Session-ID TYPE PDU-Session-ID CRITICALITY ignore PRESENCE optional }|
+	{ ID id-DL-NAS-Addl-Info TYPE DL-NAS-Addl-Info CRITICALITY ignore PRESENCE optional }|
+	{ ID id-GMM-Cause TYPE GMM-Cause CRITICALITY ignore PRESENCE optional }
+}
+
+
+PDU-Session-Release-Complete ::= SEQUENCE {
+	epDisc Ext-Prot-Disc,
+	secHdr Sec-Header-Type,
+	spare1 Spare-Bits4,
+	msgId Message-Type,
+	ngKSI NAS-Key-Set-ID,
+	spare2 Spare-Bits4,
+	rand Auth-Param-RAND,
+	autn Auth-Param-AUTN,
+	eapMsg EAP-Message
+}
+
+
+PDU-Session-Release-Complete ::= SEQUENCE {
+	epDisc Ext-Prot-Disc,
+	secHdr Sec-Header-Type,
+	spare1 Spare-Bits4,
+	msgId Message-Type,
+	ngKSI NAS-Key-Set-ID,
+	spare2 Spare-Bits4,
+	rand Auth-Param-RAND,
+	autn Auth-Param-AUTN,
+	eapMsg EAP-Message
+}
+
+
+END
+
